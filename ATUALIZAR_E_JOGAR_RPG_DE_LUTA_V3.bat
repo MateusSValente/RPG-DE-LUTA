@@ -9,13 +9,13 @@ set "PROJECT=%ROOT%\RPG-DE-LUTA"
 set "GODOT="
 
 echo ============================================================
-echo         RPG-DE-LUTA - ATUALIZAR E JOGAR V3
+echo         RPG-DE-LUTA - ATUALIZAR E JOGAR V4
 echo ============================================================
 echo.
 
 if not exist "%ROOT%" mkdir "%ROOT%"
 
-echo [1/4] Verificando Git...
+echo [1/5] Verificando Git...
 where git.exe >nul 2>&1
 if errorlevel 1 (
     echo ERRO: Git nao encontrado.
@@ -24,7 +24,7 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo [2/4] Baixando/atualizando projeto...
+echo [2/5] Baixando/atualizando projeto...
 if exist "%PROJECT%\.git" (
     pushd "%PROJECT%"
     git fetch origin
@@ -50,7 +50,7 @@ if not exist "%PROJECT%\project.godot" (
     exit /b 1
 )
 
-echo [3/4] Procurando Godot 4.7.2 / Godot 4...
+echo [3/5] Procurando Godot 4.7.2 / Godot 4...
 
 for %%N in (godot4.exe godot.exe Godot_v4.7.2-stable_win64.exe) do (
     if not defined GODOT (
@@ -64,6 +64,7 @@ if not defined GODOT if exist "C:\Godot\Godot_v4.7.2-stable_win64.exe" set "GODO
 if not defined GODOT if exist "C:\Godot\Godot.exe" set "GODOT=C:\Godot\Godot.exe"
 if not defined GODOT if exist "C:\Program Files\Godot\Godot.exe" set "GODOT=C:\Program Files\Godot\Godot.exe"
 if not defined GODOT if exist "%LOCALAPPDATA%\Programs\Godot\Godot.exe" set "GODOT=%LOCALAPPDATA%\Programs\Godot\Godot.exe"
+if not defined GODOT if exist "%PROJECT%\Godot_v4.7.2-stable_win64.exe" set "GODOT=%PROJECT%\Godot_v4.7.2-stable_win64.exe"
 
 if not defined GODOT if exist "%USERPROFILE%\Downloads" (
     for /r "%USERPROFILE%\Downloads" %%G in (Godot*.exe) do (
@@ -74,19 +75,9 @@ if not defined GODOT if exist "%USERPROFILE%\Downloads" (
     )
 )
 
-if not defined GODOT if exist "%USERPROFILE%\Desktop" (
-    for /r "%USERPROFILE%\Desktop" %%G in (Godot*.exe) do (
-        if not defined GODOT (
-            echo %%~nxG | findstr /I /V "console" >nul
-            if not errorlevel 1 if exist "%%~fG" set "GODOT=%%~fG"
-        )
-    )
-)
-
 if not defined GODOT (
     echo.
     echo ERRO: Godot 4 nao encontrado.
-    echo Extraia o Godot 4.7.2 em C:\Godot ou deixe o EXE em Downloads.
     start "" "https://godotengine.org/download/windows/"
     pause
     exit /b 2
@@ -96,7 +87,17 @@ echo Godot encontrado:
 echo "%GODOT%"
 echo.
 
-echo [4/4] Abrindo o jogo...
+echo [4/5] Importando assets do projeto...
+"%GODOT%" --headless --editor --path "%PROJECT%" --quit
+if errorlevel 1 (
+    echo.
+    echo ERRO: Godot falhou ao importar os assets.
+    echo Rode DIAGNOSTICAR_RPG_DE_LUTA_V2.bat e envie o TXT.
+    pause
+    exit /b 3
+)
+
+echo [5/5] Abrindo o jogo...
 echo.
 echo CONTROLES
 echo A / D = mover
@@ -107,7 +108,6 @@ echo R     = restaurar boneco
 echo.
 
 start "" "%GODOT%" --path "%PROJECT%"
-
 exit /b 0
 
 :git_error
