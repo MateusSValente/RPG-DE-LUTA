@@ -60,6 +60,15 @@ func _ready() -> void:
     _apply_frame()
 
 func _process(delta: float) -> void:
+    if blocking and state == "block":
+        if frame_cursor == 0:
+            frame_time += delta
+            if frame_time >= 0.10:
+                frame_cursor = 1
+                frame_time = 0.0
+                _apply_frame()
+        return
+
     var frames: Array = FRAME_INDEX[state]
     frame_time += delta
     var step := 1.0 / float(FPS[state])
@@ -71,8 +80,8 @@ func _process(delta: float) -> void:
         if one_shot:
             var completed := state
             one_shot = false
-            state = "block" if blocking else "idle"
-            frame_cursor = 1 if blocking else 0
+            state = "idle"
+            frame_cursor = 0
             action_finished.emit(completed)
         else:
             frame_cursor = 0
@@ -105,7 +114,7 @@ func set_blocking(value: bool) -> void:
         return
     blocking = value
     state = "block" if value else "idle"
-    frame_cursor = 1 if value else 0
+    frame_cursor = 0
     frame_time = 0.0
     one_shot = false
     _apply_frame()
