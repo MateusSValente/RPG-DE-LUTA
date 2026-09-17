@@ -3,7 +3,7 @@ extends SceneTree
 func _init() -> void:
     var expected := {
         "res://assets/characters/durotar/idle.png": Vector2i(512, 128),
-        "res://assets/characters/durotar/walk.png": Vector2i(512, 128),
+        "res://assets/characters/durotar/walk.png": Vector2i(1024, 128),
         "res://assets/characters/durotar/light.png": Vector2i(384, 128),
         "res://assets/characters/durotar/heavy_00.png": Vector2i(128, 128),
         "res://assets/characters/durotar/heavy_01.png": Vector2i(128, 128),

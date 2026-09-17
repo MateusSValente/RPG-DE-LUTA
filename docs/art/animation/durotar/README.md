@@ -10,16 +10,29 @@ Arma: `DUROTAR_SWORD_V1`
 
 ## Estado atual
 
-`WALK_V2`: **SPEC APPROVED FOR KEYPOSE PRODUCTION**
+`WALK_V2`: **NORMALIZED / RUNTIME_QA**
 
-Próxima arte autorizada:
+Arte aprovada:
+- ciclo completo com 8 frames;
+- runtime strip normalizada em `assets/characters/durotar/walk.png`;
+- células `128×128`;
+- strip final `1024×128`;
+- baseline `Y=116`;
+- pivot lógico `(64,116)`;
+- timing por frame @60 Hz: `4,3,4,3,4,3,4,3`;
+- velocidade inicial de playtest: `120 px/s`.
 
-- F01 CONTACT_L
-- F03 PASSING_L
-- F05 CONTACT_R
-- F07 PASSING_R
+Próximo gate:
 
-In-betweens F02/F04/F06/F08 permanecem bloqueados até aprovação das quatro key poses.
+`RUNTIME_QA → LOCKED`
+
+Validar no jogo:
+- foot slide;
+- jitter vertical;
+- F08→F01;
+- esquerda/direita;
+- consistência da espada;
+- transição Idle↔Walk.
 
 ## Pipeline
 
