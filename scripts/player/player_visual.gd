@@ -2,7 +2,6 @@ extends Sprite2D
 
 signal action_finished(action_name: String)
 
-const FRAME_SIZE := Vector2(128, 128)
 const BASELINE_OFFSET := Vector2(0, -52)
 
 const STRIP_PATHS := {
@@ -57,12 +56,18 @@ func _ready() -> void:
     scale = Vector2.ONE
 
     for key in STRIP_PATHS.keys():
-        strip_textures[key] = load(STRIP_PATHS[key])
+        var loaded_strip := load(STRIP_PATHS[key]) as Texture2D
+        if loaded_strip == null:
+            push_error("Falha ao carregar sprite strip: " + STRIP_PATHS[key])
+        strip_textures[key] = loaded_strip
 
     for key in SINGLE_PATHS.keys():
         var frames: Array[Texture2D] = []
         for path in SINGLE_PATHS[key]:
-            frames.append(load(path) as Texture2D)
+            var loaded_frame := load(path) as Texture2D
+            if loaded_frame == null:
+                push_error("Falha ao carregar sprite frame: " + path)
+            frames.append(loaded_frame)
         single_textures[key] = frames
 
     _apply_frame()
@@ -114,6 +119,9 @@ func set_locomotion(is_moving: bool) -> void:
     _apply_frame()
 
 func play_action(action_name: String) -> void:
+    if not FRAME_COUNTS.has(action_name):
+        push_warning("Animação desconhecida: " + action_name)
+        return
     blocking = false
     state = action_name
     frame_cursor = 0
@@ -138,7 +146,7 @@ func _apply_frame() -> void:
     flip_h = facing < 0
 
     if STRIP_PATHS.has(state):
-        var atlas: Texture2D = strip_textures[state] as Texture2D
+        var atlas: Texture2D = strip_textures.get(state) as Texture2D
         if atlas == null:
             return
         var frame := AtlasTexture.new()
@@ -148,6 +156,6 @@ func _apply_frame() -> void:
         return
 
     if SINGLE_PATHS.has(state):
-        var frames: Array = single_textures[state]
+        var frames: Array = single_textures.get(state, [])
         if frame_cursor >= 0 and frame_cursor < frames.size():
             texture = frames[frame_cursor] as Texture2D
