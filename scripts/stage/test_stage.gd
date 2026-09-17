@@ -8,7 +8,7 @@ func _ready() -> void:
     _ensure_key_action("block", KEY_L)
     _ensure_key_action("reset_dummy", KEY_R)
 
-func _ensure_key_action(action: StringName, physical_key: Key) -> void:
+func _ensure_key_action(action: StringName, physical_key: int) -> void:
     if not InputMap.has_action(action):
         InputMap.add_action(action)
     for existing in InputMap.action_get_events(action):
