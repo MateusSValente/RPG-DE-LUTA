@@ -1,38 +1,64 @@
 # RPG-DE-LUTA
 
-Demo jogável para validação do `DUROTAR_MASTER_V1`.
+Demo jogável / vertical slice em desenvolvimento para validar Durotar e o núcleo de combate antes de ampliar conteúdo.
 
 ## Abrir
 
-Execute `ATUALIZAR_E_JOGAR_RPG_DE_LUTA_V3.bat`.
+Execute `ATUALIZAR_E_JOGAR_RPG_DE_LUTA_V4.bat`.
 
-O launcher agora:
+O launcher atualiza a `main`, importa assets com Godot 4.7.2 e abre a cena principal.
 
-1. atualiza a `main`;
-2. localiza o Godot 4.7.2;
-3. executa uma importação headless para garantir que sprites e cenário sejam convertidos para o cache do Godot;
-4. só depois abre o jogo.
+## Controles atuais
 
-## Controles
-
-- `A` / `D`: mover
-- `J`: combo fraco
-- `K`: combo forte
+- `A / D`: mover
+- `J`: ataque fraco protótipo
+- `K`: ataque forte protótipo
 - `L`: defesa
-- `R`: restaurar boneco
+- `R`: restaurar alvo de treino
+
+## Estado da arte
+
+A prancha `DUROTAR_MASTER_V1_REFERENCE.webp` continua sendo a fonte de verdade visual do personagem.
+
+A quantidade de frames da prancha original é considerada **protótipo**, não meta final de produção.
+
+Contratos atuais:
+
+- `docs/ART_PRODUCTION_MEGA_SPEC.md`
+- `docs/COMBAT_POLISH_VERTICAL_SLICE_PLAN.md`
+- `docs/art/reference/durotar/DUROTAR_SWORD_V1_SPEC.md`
+- `docs/art/animation/durotar/DUROTAR_ANIMATION_PRODUCTION_STANDARD_V1.md`
+- `docs/art/animation/durotar/WALK_V2_SPEC.md`
+
+## Regra de produção
+
+Nenhuma nova animação do Durotar pode entrar em produção sem `ANIMATION_SPEC` versionada.
+
+Fluxo:
+
+`Master travado → Spec → Key poses → Review → In-betweens → Normalização → Runtime QA → LOCKED`
+
+Próxima arte autorizada: somente as quatro key poses de `WALK_V2` (`F01/F03/F05/F07`).
 
 ## Runtime desta build
 
-A demo usa somente assets reais de imagem para Durotar e para as duas camadas do cenário.
+A demo usa assets de imagem reais para Durotar e para as camadas visuais do cenário. Não reconstruir personagem/cenário artisticamente com `draw_rect`, `draw_polygon` ou equivalentes.
 
-### Durotar
+### Durotar runtime atual
 
-`assets/characters/durotar/`
+Assets em `assets/characters/durotar/`.
 
 ### Cenário
 
-`assets/stages/forest_test/`
+Assets em `assets/stages/forest_test/`:
+
+- `backwall.webp`
+- `ground.webp`
 
 ## Validação automática
 
 O workflow `Godot 4.7.2 Validate` falha se qualquer sprite ou camada de cenário obrigatória não carregar ou tiver dimensão incorreta.
+
+## Gate
+
+Não avançar para segundo personagem, inimigos finais, hub, loot ou geração de fase antes do GO da vertical slice de combate.
