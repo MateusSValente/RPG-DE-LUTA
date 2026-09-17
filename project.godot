@@ -1,0 +1,46 @@
+; Engine configuration file.
+; Generated for RPG-DE-LUTA playable sprite test.
+config_version=5
+
+[application]
+config/name="RPG DE LUTA - Sprite Test"
+run/main_scene="res://scenes/demo/test_stage.tscn"
+
+[display]
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+textures/default_filters/use_nearest_mipmap_filter=false
+textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+
+[input]
+move_left={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":65)]
+}
+move_right={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":68)]
+}
+light_attack={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":74)]
+}
+heavy_attack={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":75)]
+}
+block={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":76)]
+}
+reset_dummy={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"physical_keycode":82)]
+}
