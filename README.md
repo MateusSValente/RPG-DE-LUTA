@@ -27,6 +27,7 @@ Contratos atuais:
 - `docs/ART_PRODUCTION_MEGA_SPEC.md`
 - `docs/COMBAT_POLISH_VERTICAL_SLICE_PLAN.md`
 - `docs/art/reference/durotar/DUROTAR_SWORD_V1_SPEC.md`
+- `docs/art/animation/durotar/README.md`
 - `docs/art/animation/durotar/DUROTAR_ANIMATION_PRODUCTION_STANDARD_V1.md`
 - `docs/art/animation/durotar/WALK_V2_SPEC.md`
 
