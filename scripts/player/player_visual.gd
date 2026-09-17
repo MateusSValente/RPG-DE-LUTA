@@ -2,11 +2,11 @@ extends Sprite2D
 
 signal action_finished(action_name: String)
 
-const SHEET_PATH := "res://docs/art/reference/durotar/DUROTAR_MASTER_V1_REFERENCE.webp"
-const DISPLAY_SCALE := 0.42
+const SHEET_PATH: String = "res://docs/art/reference/durotar/DUROTAR_MASTER_V1_REFERENCE.webp"
+const DISPLAY_SCALE: float = 0.42
 
 # region = crop na prancha canônica; anchor = ponto dos pés dentro do crop.
-const FRAME_DATA := [
+const FRAME_DATA: Array[Dictionary] = [
     {"region": Rect2(20,55,170,260), "anchor": Vector2(85,253)},
     {"region": Rect2(195,55,175,260), "anchor": Vector2(87,253)},
     {"region": Rect2(380,55,170,260), "anchor": Vector2(82,253)},
@@ -27,7 +27,7 @@ const FRAME_DATA := [
     {"region": Rect2(500,755,220,243), "anchor": Vector2(110,232)},
 ]
 
-const FRAME_INDEX := {
+const FRAME_INDEX: Dictionary = {
     "idle": [0,1,2,3],
     "walk": [4,5,6,7],
     "light": [8,9,10],
@@ -35,7 +35,7 @@ const FRAME_INDEX := {
     "block": [15,16,17],
 }
 
-const FPS := {
+const FPS: Dictionary = {
     "idle": 4.0,
     "walk": 8.0,
     "light": 12.0,
@@ -44,15 +44,18 @@ const FPS := {
 }
 
 var sheet: Texture2D
-var state := "idle"
-var frame_cursor := 0
-var frame_time := 0.0
-var one_shot := false
-var blocking := false
-var facing := 1
+var state: String = "idle"
+var frame_cursor: int = 0
+var frame_time: float = 0.0
+var one_shot: bool = false
+var blocking: bool = false
+var facing: int = 1
 
 func _ready() -> void:
-    sheet = load(SHEET_PATH)
+    sheet = load(SHEET_PATH) as Texture2D
+    if sheet == null:
+        push_error("DUROTAR_MASTER_V1 não pôde ser carregado: " + SHEET_PATH)
+        return
     centered = true
     texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
     scale = Vector2(DISPLAY_SCALE, DISPLAY_SCALE)
@@ -60,6 +63,9 @@ func _ready() -> void:
     _apply_frame()
 
 func _process(delta: float) -> void:
+    if sheet == null:
+        return
+
     if blocking and state == "block":
         if frame_cursor == 0:
             frame_time += delta
@@ -69,16 +75,21 @@ func _process(delta: float) -> void:
                 _apply_frame()
         return
 
-    var frames: Array = FRAME_INDEX[state]
+    var frames: Array = FRAME_INDEX.get(state, [])
+    if frames.is_empty():
+        return
+
     frame_time += delta
-    var step := 1.0 / float(FPS[state])
+    var fps_value: float = float(FPS.get(state, 1.0))
+    var step: float = 1.0 / maxf(fps_value, 0.001)
     if frame_time < step:
         return
+
     frame_time -= step
     frame_cursor += 1
     if frame_cursor >= frames.size():
         if one_shot:
-            var completed := state
+            var completed: String = state
             one_shot = false
             state = "idle"
             frame_cursor = 0
@@ -94,7 +105,7 @@ func set_facing(direction: int) -> void:
 func set_locomotion(is_moving: bool) -> void:
     if one_shot or blocking:
         return
-    var wanted := "walk" if is_moving else "idle"
+    var wanted: String = "walk" if is_moving else "idle"
     if wanted != state:
         state = wanted
         frame_cursor = 0
@@ -102,6 +113,9 @@ func set_locomotion(is_moving: bool) -> void:
         _apply_frame()
 
 func play_action(action_name: String) -> void:
+    if not FRAME_INDEX.has(action_name):
+        push_warning("Animação desconhecida: " + action_name)
+        return
     blocking = false
     state = action_name
     frame_cursor = 0
@@ -111,6 +125,8 @@ func play_action(action_name: String) -> void:
 
 func set_blocking(value: bool) -> void:
     if one_shot and state != "block":
+        return
+    if blocking == value and ((value and state == "block") or (not value and state == "idle")):
         return
     blocking = value
     state = "block" if value else "idle"
@@ -122,19 +138,30 @@ func set_blocking(value: bool) -> void:
 func _apply_frame() -> void:
     if sheet == null:
         return
-    var frames: Array = FRAME_INDEX[state]
-    var idx := int(frames[clamp(frame_cursor,0,frames.size()-1)])
+
+    var frames: Array = FRAME_INDEX.get(state, [])
+    if frames.is_empty():
+        return
+
+    var safe_cursor: int = clampi(frame_cursor, 0, frames.size() - 1)
+    var idx: int = int(frames[safe_cursor])
+    if idx < 0 or idx >= FRAME_DATA.size():
+        push_error("Índice de frame inválido: %d" % idx)
+        return
+
     var data: Dictionary = FRAME_DATA[idx]
-    var tex := AtlasTexture.new()
+    var region: Rect2 = data["region"]
+    var anchor: Vector2 = data["anchor"]
+
+    var tex: AtlasTexture = AtlasTexture.new()
     tex.atlas = sheet
-    tex.region = data.region
+    tex.region = region
     texture = tex
     flip_h = facing < 0
 
-    var size := data.region.size
-    var anchor: Vector2 = data.anchor
-    var local_anchor := anchor - size * 0.5
-    var correction := -local_anchor * DISPLAY_SCALE
+    var frame_size: Vector2 = region.size
+    var local_anchor: Vector2 = anchor - frame_size * 0.5
+    var correction: Vector2 = -local_anchor * DISPLAY_SCALE
     if flip_h:
         correction.x = -correction.x
     position = correction
@@ -142,8 +169,8 @@ func _apply_frame() -> void:
 func _install_transparency_shader() -> void:
     # A prancha aprovada possui fundo visual preto. No runtime apenas pixels do fundo
     # quase pretos são descartados; cabelo/barba/outline permanecem por estarem acima do limiar.
-    var shader := Shader.new()
+    var shader: Shader = Shader.new()
     shader.code = "shader_type canvas_item;\nvoid fragment(){ vec4 c=texture(TEXTURE,UV); float m=max(max(c.r,c.g),c.b); if(m < 0.022){ discard; } COLOR=c; }"
-    var mat := ShaderMaterial.new()
+    var mat: ShaderMaterial = ShaderMaterial.new()
     mat.shader = shader
     material = mat
