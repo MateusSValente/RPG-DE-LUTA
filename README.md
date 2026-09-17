@@ -1,39 +1,38 @@
-# RPG-DE-LUTA — Demo jogável de validação do Durotar
+# RPG-DE-LUTA
 
-Esta build existe para testar o `DUROTAR_MASTER_V1` em gameplay antes de avançar a produção do jogo.
+Demo jogável para validação do `DUROTAR_MASTER_V1`.
 
 ## Abrir
 
-1. Execute `ATUALIZAR_E_JOGAR_RPG_DE_LUTA_V3.bat`.
-2. O BAT atualiza a branch `main` e abre o projeto diretamente no Godot 4.
+Execute `ATUALIZAR_E_JOGAR_RPG_DE_LUTA_V3.bat`.
+
+O launcher agora:
+
+1. atualiza a `main`;
+2. localiza o Godot 4.7.2;
+3. executa uma importação headless para garantir que sprites e cenário sejam convertidos para o cache do Godot;
+4. só depois abre o jogo.
 
 ## Controles
 
 - `A` / `D`: mover
 - `J`: combo fraco
 - `K`: combo forte
-- `L`: defesa (segurar)
-- `R`: restaurar o boneco de treino
+- `L`: defesa
+- `R`: restaurar boneco
 
 ## Runtime desta build
 
-A demo usa somente **assets de imagem reais** para Durotar e para as duas camadas visuais do cenário. Não há reconstrução visual procedural do personagem nem do cenário.
+A demo usa somente assets reais de imagem para Durotar e para as duas camadas do cenário.
 
 ### Durotar
 
-Assets em `assets/characters/durotar/`:
-- `idle.png` — 4 frames
-- `walk.png` — 4 frames
-- `light.png` — 3 frames
-- `heavy_00.png` a `heavy_03.png`
-- `block_00.png` a `block_02.png`
+`assets/characters/durotar/`
 
 ### Cenário
 
-Assets em `assets/stages/forest_test/`:
-- `backwall.webp` — camada traseira
-- `ground.webp` — terreno jogável
+`assets/stages/forest_test/`
 
-## Critério de validação
+## Validação automática
 
-Validar escala, identidade visual, leitura do Idle/Walk, estabilidade dos pés, Combo Fraco, Combo Forte, Defesa e a proporção da espada. Se passar, estes assets viram a base da primeira vertical slice.
+O workflow `Godot 4.7.2 Validate` falha se qualquer sprite ou camada de cenário obrigatória não carregar ou tiver dimensão incorreta.
