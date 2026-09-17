@@ -3,7 +3,6 @@ extends Sprite2D
 signal action_finished(action_name: String)
 
 const BASELINE_OFFSET := Vector2(0, -52)
-const SIM_TICK_SECONDS := 1.0 / 60.0
 
 const STRIP_PATHS := {
     "idle": "res://assets/characters/durotar/idle.png",
@@ -27,20 +26,15 @@ const SINGLE_PATHS := {
 
 const FRAME_COUNTS := {
     "idle": 4,
-    "walk": 8,
+    "walk": 4,
     "light": 3,
     "heavy": 4,
     "block": 3,
 }
 
-# WALK_V2 usa timing autoral por frame definido no WALK_V2_SPEC.
-# As demais animações continuam em fallback FPS até receberem seus próprios specs V2.
-const FRAME_HOLDS_TICKS := {
-    "walk": [4, 3, 4, 3, 4, 3, 4, 3],
-}
-
-const FALLBACK_FPS := {
+const FPS := {
     "idle": 4.0,
+    "walk": 8.0,
     "light": 12.0,
     "heavy": 8.0,
     "block": 10.0,
@@ -89,7 +83,7 @@ func _process(delta: float) -> void:
         return
 
     frame_time += delta
-    var step := _current_frame_duration()
+    var step: float = 1.0 / float(FPS[state])
     if frame_time < step:
         return
 
@@ -108,14 +102,6 @@ func _process(delta: float) -> void:
             frame_cursor = 0
 
     _apply_frame()
-
-func _current_frame_duration() -> float:
-    if FRAME_HOLDS_TICKS.has(state):
-        var holds: Array = FRAME_HOLDS_TICKS[state]
-        var safe_index := clampi(frame_cursor, 0, holds.size() - 1)
-        return float(holds[safe_index]) * SIM_TICK_SECONDS
-
-    return 1.0 / float(FALLBACK_FPS.get(state, 8.0))
 
 func set_facing(direction: int) -> void:
     facing = 1 if direction >= 0 else -1
