@@ -15,42 +15,25 @@ Esta build existe para testar o `DUROTAR_MASTER_V1` em gameplay antes de avança
 - `L`: defesa (segurar)
 - `R`: restaurar o boneco de treino
 
-## O que está sendo validado
+## Runtime desta build
 
-- escala do Durotar no cenário;
-- leitura de Idle e Walk;
-- estabilidade da baseline durante Walk;
-- diferenciação visual entre ataque fraco e forte;
-- leitura/tamanho da espada;
-- silhueta em movimento;
-- Defesa;
-- aparência do Master em `640×360`.
-
-## Regra de runtime desta demo
-
-A demo usa **assets de imagem reais**. Não há reconstrução artística do personagem ou do cenário por `draw_rect`, `draw_polygon` ou equivalentes.
+A demo usa somente **assets de imagem reais** para Durotar e para as duas camadas visuais do cenário. Não há reconstrução visual procedural do personagem nem do cenário.
 
 ### Durotar
 
-Os frames de runtime foram derivados da prancha aprovada e normalizados para células `128×128`:
-
-`assets/characters/durotar/`
-
-- `idle.png` — 4 frames;
-- `walk.png` — 4 frames;
-- `light.png` — 3 frames;
-- `heavy_00.png` ... `heavy_03.png`;
-- `block_00.png` ... `block_02.png`.
+Assets em `assets/characters/durotar/`:
+- `idle.png` — 4 frames
+- `walk.png` — 4 frames
+- `light.png` — 3 frames
+- `heavy_00.png` a `heavy_03.png`
+- `block_00.png` a `block_02.png`
 
 ### Cenário
 
-O cenário segue a separação obrigatória da Art Spec e usa duas imagens independentes:
+Assets em `assets/stages/forest_test/`:
+- `backwall.webp` — camada traseira
+- `ground.webp` — terreno jogável
 
-- `assets/stages/forest_test/backwall.webp` — parede/fundo visual;
-- `assets/stages/forest_test/ground.webp` — terreno jogável.
+## Critério de validação
 
-Os scripts procedurais antigos de cenário não participam da composição visual desta build.
-
-## Critério para avançar
-
-Se o Durotar passar no teste jogável de escala, leitura, animação e identidade visual, estes assets passam a ser a base da primeira vertical slice. Ajustes posteriores devem preservar `DUROTAR_MASTER_V1` e `DUROTAR_SWORD_V1`.
+Validar escala, identidade visual, leitura do Idle/Walk, estabilidade dos pés, Combo Fraco, Combo Forte, Defesa e a proporção da espada. Se passar, estes assets viram a base da primeira vertical slice.
