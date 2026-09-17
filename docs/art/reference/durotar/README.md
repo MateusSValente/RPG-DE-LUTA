@@ -15,6 +15,12 @@ Arquivo de referência:
 
 A imagem fixa a aparência oficial do personagem e deve ser utilizada como referência obrigatória em qualquer nova geração de sprites do Durotar.
 
+Contratos complementares obrigatórios:
+
+- `DUROTAR_SWORD_V1_SPEC.md` — contrato travado da arma;
+- `../../animation/durotar/DUROTAR_ANIMATION_PRODUCTION_STANDARD_V1.md` — padrão de produção de animação;
+- `../../animation/durotar/WALK_V2_SPEC.md` — especificação frame a frame da próxima animação em produção.
+
 ### Elementos travados
 
 - cabelo preto curto e encaracolado;
@@ -32,13 +38,27 @@ Nenhum asset derivado pode adicionar, remover ou redesenhar estes elementos sem 
 
 ## Animações representadas na referência
 
+A prancha aprovada original contém protótipos visuais:
+
 - `IDLE`: 4 frames;
 - `WALK`: 4 frames;
 - `COMBO_FRACO`: 3 frames;
 - `COMBO_FORTE`: 4 frames;
 - `DEFESA`: 3 frames.
 
-As poses e a intenção visual destes blocos são referências aprovadas para a primeira demo.
+Esses blocos preservam a intenção visual aprovada da primeira demo, mas **não definem mais a quantidade final de frames de produção**.
+
+A vertical slice passa a seguir `DUROTAR_ANIMATION_PRODUCTION_STANDARD_V1`, incluindo:
+
+- Idle: 6 desenhos;
+- Walk: 8 desenhos;
+- Light 1: 6 desenhos;
+- Light 2: 6 desenhos;
+- Light 3/Finisher: 8 desenhos;
+- Heavy: 10 desenhos;
+- defesa separada em Enter / Hold / Hit.
+
+Mudanças adicionais exigem uma especificação versionada.
 
 ## Importante — referência visual x asset de runtime
 
@@ -46,7 +66,7 @@ As poses e a intenção visual destes blocos são referências aprovadas para a 
 
 Os assets de runtime devem ser derivados dela e obedecer ao contrato `docs/ART_PRODUCTION_MEGA_SPEC.md`, incluindo:
 
-- canvas individual de `128x128 px` para `HUMANOID_STANDARD_V1`;
+- canvas individual de `128x128 px` para `HUMANOID_STANDARD_V1` quando a animação não declarar camada/canvas maior;
 - altura corporal alvo de `96 px`, tolerância `93–99 px`;
 - baseline `Y = 116`;
 - pivot lógico `64,116`;
@@ -63,3 +83,5 @@ Os assets de runtime devem ser derivados dela e obedecer ao contrato `docs/ART_P
 Se uma nova geração divergir desta referência em identidade, arma, roupa, proporção ou estilo, ela deve ser rejeitada.
 
 A ausência de uma especificação não autoriza invenção criativa. Mudanças exigem uma nova versão explicitamente aprovada do Master.
+
+**Nenhuma nova animação do Durotar pode ser produzida sem `ANIMATION_SPEC` versionada.**
