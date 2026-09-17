@@ -1,0 +1,78 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/stage/test_stage.gd" id="1_stage"]
+[ext_resource type="Script" path="res://scripts/stage/forest_backwall.gd" id="2_backwall"]
+[ext_resource type="Script" path="res://scripts/stage/forest_ground.gd" id="3_ground"]
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="4_player"]
+[ext_resource type="Script" path="res://scripts/player/player_visual.gd" id="5_visual"]
+[ext_resource type="Script" path="res://scripts/player/player_combat.gd" id="6_combat"]
+[ext_resource type="Script" path="res://scripts/target/training_dummy.gd" id="7_dummy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
+size = Vector2(28, 58)
+
+[node name="TestStage" type="Node2D"]
+script = ExtResource("1_stage")
+
+[node name="Backwall" type="Node2D" parent="."]
+script = ExtResource("2_backwall")
+
+[node name="Ground" type="Node2D" parent="."]
+script = ExtResource("3_ground")
+
+[node name="Durotar" type="CharacterBody2D" parent="."]
+position = Vector2(145, 300)
+script = ExtResource("4_player")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Durotar"]
+position = Vector2(0, -29)
+shape = SubResource("RectangleShape2D_player")
+
+[node name="Visual" type="Sprite2D" parent="Durotar"]
+script = ExtResource("5_visual")
+
+[node name="Combat" type="Node" parent="Durotar"]
+script = ExtResource("6_combat")
+
+[node name="TrainingDummy" type="Node2D" parent="."]
+position = Vector2(455, 300)
+script = ExtResource("7_dummy")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Title" type="Label" parent="HUD"]
+offset_left = 12.0
+offset_top = 10.0
+offset_right = 350.0
+offset_bottom = 40.0
+theme_override_colors/font_color = Color(0.93, 0.88, 0.77, 1)
+theme_override_colors/font_shadow_color = Color(0,0,0,0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+text = "RPG-DE-LUTA | TESTE JOGÁVEL DUROTAR"
+
+[node name="Controls" type="Label" parent="HUD"]
+offset_left = 12.0
+offset_top = 40.0
+offset_right = 260.0
+offset_bottom = 130.0
+theme_override_colors/font_color = Color(1,1,1,0.9)
+theme_override_colors/font_shadow_color = Color(0,0,0,0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 12
+text = "A/D  mover\nJ  combo fraco\nK  combo forte\nL  defesa\nR  reiniciar boneco"
+
+[node name="Notice" type="Label" parent="HUD"]
+offset_left = 370.0
+offset_top = 12.0
+offset_right = 628.0
+offset_bottom = 58.0
+theme_override_colors/font_color = Color(0.94,0.86,0.63,1)
+theme_override_colors/font_shadow_color = Color(0,0,0,0.9)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 11
+text = "DEMO DE VALIDAÇÃO\nMaster canônico em runtime"
+horizontal_alignment = 2
