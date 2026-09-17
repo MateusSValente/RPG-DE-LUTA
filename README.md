@@ -4,9 +4,8 @@ Esta build existe para testar o `DUROTAR_MASTER_V1` em gameplay antes de avança
 
 ## Abrir
 
-1. Clone/atualize o repositório.
-2. Abra `project.godot` no Godot 4.
-3. Pressione **Play/F6/F5**.
+1. Execute `ATUALIZAR_E_JOGAR_RPG_DE_LUTA_V3.bat`.
+2. O BAT atualiza a branch `main` e abre o projeto diretamente no Godot 4.
 
 ## Controles
 
@@ -16,7 +15,7 @@ Esta build existe para testar o `DUROTAR_MASTER_V1` em gameplay antes de avança
 - `L`: defesa (segurar)
 - `R`: restaurar o boneco de treino
 
-## O que validar
+## O que está sendo validado
 
 - escala do Durotar no cenário;
 - leitura de Idle e Walk;
@@ -25,31 +24,33 @@ Esta build existe para testar o `DUROTAR_MASTER_V1` em gameplay antes de avança
 - leitura/tamanho da espada;
 - silhueta em movimento;
 - Defesa;
-- aparência do Master na resolução lógica `640×360`.
+- aparência do Master em `640×360`.
 
-## Arquitetura da cena
+## Regra de runtime desta demo
 
-O cenário segue a separação obrigatória definida na Art Spec:
+A demo usa **assets de imagem reais**. Não há reconstrução artística do personagem ou do cenário por `draw_rect`, `draw_polygon` ou equivalentes.
 
-- `ForestBackwall`: somente plano traseiro;
-- `ForestGround`: somente terreno/plano jogável.
+### Durotar
 
-Nesta build ambos são assets de teste determinísticos, implementados separadamente. Eles não contêm HUD, personagem ou lógica de combate.
+Os frames de runtime foram derivados da prancha aprovada e normalizados para células `128×128`:
 
-O Durotar é renderizado diretamente a partir de:
+`assets/characters/durotar/`
 
-`docs/art/reference/durotar/DUROTAR_MASTER_V1_REFERENCE.webp`
+- `idle.png` — 4 frames;
+- `walk.png` — 4 frames;
+- `light.png` — 3 frames;
+- `heavy_00.png` ... `heavy_03.png`;
+- `block_00.png` ... `block_02.png`.
 
-As regiões da prancha são recortadas em runtime e alinhadas por anchor fixo. O fundo quase-preto da prancha é removido por shader apenas durante o teste. Se o personagem for aprovado jogando, o próximo passo é exportar os frames definitivos RGBA/128×128 derivados do Master.
+### Cenário
 
-## Escopo deliberadamente fora desta demo
+O cenário segue a separação obrigatória da Art Spec e usa duas imagens independentes:
 
-- Hub;
-- roguelite/progressão;
-- loja;
-- loot;
-- inimigos reais;
-- geração de fases;
-- segundo personagem.
+- `assets/stages/forest_test/backwall.webp` — parede/fundo visual;
+- `assets/stages/forest_test/ground.webp` — terreno jogável.
 
-Esses sistemas só entram depois da aprovação do núcleo visual e do feel básico do Durotar.
+Os scripts procedurais antigos de cenário não participam da composição visual desta build.
+
+## Critério para avançar
+
+Se o Durotar passar no teste jogável de escala, leitura, animação e identidade visual, estes assets passam a ser a base da primeira vertical slice. Ajustes posteriores devem preservar `DUROTAR_MASTER_V1` e `DUROTAR_SWORD_V1`.
