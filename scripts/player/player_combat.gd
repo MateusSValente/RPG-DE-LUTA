@@ -9,6 +9,7 @@ var hit_at := 0.0
 var hit_done := false
 var damage := 0
 var reach := 0.0
+var was_blocking := false
 
 func _process(delta: float) -> void:
     if active:
@@ -22,8 +23,10 @@ func _process(delta: float) -> void:
         return
 
     var wants_block := Input.is_action_pressed("block")
-    player.set_blocking(wants_block)
-    visual.set_blocking(wants_block)
+    if wants_block != was_blocking:
+        was_blocking = wants_block
+        player.set_blocking(wants_block)
+        visual.set_blocking(wants_block)
     if wants_block:
         return
 
