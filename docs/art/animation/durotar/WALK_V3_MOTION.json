@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "status": "DRAFT",
+  "animation_id": "DUROTAR_WALK_V3",
+  "character_master": "DUROTAR_MASTER_V1",
+  "weapon_master": "DUROTAR_SWORD_V1",
+  "facing": "RIGHT",
+  "authored_drawings": 8,
+  "simulation_hz": 60,
+  "phase_driver": "DISTANCE",
+  "qa_speed_px_s": 120,
+  "cycle_distance_px": 56,
+  "phase_step_px": 7,
+  "baseline_y": 116,
+  "logical_pivot": [
+    64,
+    116
+  ],
+  "normalization": {
+    "shared_scale": true,
+    "scale_source": "DUROTAR_MASTER_V1",
+    "per_frame_bbox_fit": false,
+    "shared_root_anchor": true
+  },
+  "limits": {
+    "pelvis_vertical_bob_peak_to_peak_px": 2,
+    "preferred_support_foot_drift_authored_samples_px": 1,
+    "max_visible_runtime_support_foot_drift_px": 2,
+    "sword_tip_min_clearance_from_baseline_px": 2
+  },
+  "joints_required": [
+    "ROOT_PELVIS",
+    "HEAD",
+    "SHOULDER_NEAR",
+    "SHOULDER_FAR",
+    "HIP_NEAR",
+    "HIP_FAR",
+    "KNEE_NEAR",
+    "KNEE_FAR",
+    "ANKLE_NEAR",
+    "ANKLE_FAR",
+    "HEEL_NEAR",
+    "HEEL_FAR",
+    "TOE_NEAR",
+    "TOE_FAR",
+    "SWORD_GRIP",
+    "SWORD_TIP"
+  ],
+  "frames": [
+    {
+      "id": "F01",
+      "phase": "CONTACT_NEAR",
+      "distance_px": 0,
+      "support_leg": "NEAR",
+      "swing_leg": "FAR",
+      "planted_contact": "NEAR_HEEL_TO_FOOT",
+      "pelvis_y_offset_px": 0,
+      "key_pose": true,
+      "joint_targets": null
+    },
+    {
+      "id": "F02",
+      "phase": "DOWN_NEAR",
+      "distance_px": 7,
+      "support_leg": "NEAR",
+      "swing_leg": "FAR",
+      "planted_contact": "NEAR_FOOT",
+      "pelvis_y_offset_px": 1,
+      "key_pose": false,
+      "joint_targets": null
+    },
+    {
+      "id": "F03",
+      "phase": "PASSING_FAR",
+      "distance_px": 14,
+      "support_leg": "NEAR",
+      "swing_leg": "FAR",
+      "planted_contact": "NEAR_FOOT",
+      "pelvis_y_offset_px": 0,
+      "key_pose": true,
+      "joint_targets": null
+    },
+    {
+      "id": "F04",
+      "phase": "UP_NEAR",
+      "distance_px": 21,
+      "support_leg": "NEAR",
+      "swing_leg": "FAR",
+      "planted_contact": "NEAR_FOREFOOT",
+      "pelvis_y_offset_px": -1,
+      "key_pose": false,
+      "joint_targets": null
+    },
+    {
+      "id": "F05",
+      "phase": "CONTACT_FAR",
+      "distance_px": 28,
+      "support_leg": "FAR",
+      "swing_leg": "NEAR",
+      "planted_contact": "FAR_HEEL_TO_FOOT",
+      "pelvis_y_offset_px": 0,
+      "key_pose": true,
+      "joint_targets": null
+    },
+    {
+      "id": "F06",
+      "phase": "DOWN_FAR",
+      "distance_px": 35,
+      "support_leg": "FAR",
+      "swing_leg": "NEAR",
+      "planted_contact": "FAR_FOOT",
+      "pelvis_y_offset_px": 1,
+      "key_pose": false,
+      "joint_targets": null
+    },
+    {
+      "id": "F07",
+      "phase": "PASSING_NEAR",
+      "distance_px": 42,
+      "support_leg": "FAR",
+      "swing_leg": "NEAR",
+      "planted_contact": "FAR_FOOT",
+      "pelvis_y_offset_px": 0,
+      "key_pose": true,
+      "joint_targets": null
+    },
+    {
+      "id": "F08",
+      "phase": "UP_FAR",
+      "distance_px": 49,
+      "support_leg": "FAR",
+      "swing_leg": "NEAR",
+      "planted_contact": "FAR_FOREFOOT",
+      "pelvis_y_offset_px": -1,
+      "key_pose": false,
+      "joint_targets": null
+    }
+  ],
+  "next_gate": "FILL_JOINT_TARGETS_FROM_WALK_V3_POSE_GUIDE"
+}
