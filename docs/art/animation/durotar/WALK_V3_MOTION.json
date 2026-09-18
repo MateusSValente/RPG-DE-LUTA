@@ -1,858 +1,97 @@
 {
-  "schema_version": 2,
-  "status": "POSE_GUIDE_REVIEW",
+  "schema_version": 3,
+  "status": "SOURCE_FRAME_AUDIT",
   "animation_id": "DUROTAR_WALK_V3",
-  "character_master": "DUROTAR_MASTER_V1",
-  "weapon_master": "DUROTAR_SWORD_V1",
-  "facing": "RIGHT",
-  "authored_drawings": 8,
+  "canonical_source": {
+    "path": "assets/characters/durotar/walk.png",
+    "dimensions_px": [
+      512,
+      128
+    ],
+    "cell_dimensions_px": [
+      128,
+      128
+    ],
+    "frame_ids": [
+      "W00",
+      "W01",
+      "W02",
+      "W03"
+    ],
+    "extraction": "LOSSLESS_CELL_SLICE",
+    "art_mutation_allowed_during_audit": false
+  },
+  "authority": {
+    "identity": "DUROTAR_MASTER_V1",
+    "locomotion_pose": "RAW_WALK_SOURCE",
+    "weapon": "DUROTAR_SWORD_V1",
+    "runtime_tuning": "MEASURED_QA",
+    "pose_guide": "DIAGNOSTIC_ONLY",
+    "generated_art": "CANDIDATE_ONLY"
+  },
+  "authored_drawings_initial": 4,
+  "authored_drawings_max_without_new_spec": 8,
+  "additional_frames_policy": "ONLY_AFTER_SPECIFIC_FOUR_FRAME_QA_FAILURE",
   "simulation_hz": 60,
-  "phase_driver": "DISTANCE",
-  "qa_speed_px_s": 120,
-  "cycle_distance_px": 56,
-  "phase_step_px": 7,
-  "baseline_y": 116,
-  "logical_pivot": [
+  "playback": {
+    "preferred_phase_driver": "DISTANCE",
+    "cycle_distance_px": null,
+    "fixed_fps_as_only_driver": false
+  },
+  "baseline_target_y": 116,
+  "logical_pivot_target": [
     64,
     116
   ],
   "normalization": {
-    "shared_scale": true,
-    "scale_source": "DUROTAR_MASTER_V1",
     "per_frame_bbox_fit": false,
-    "shared_root_anchor": true
+    "per_frame_rescale": false,
+    "raw_source_scale_preserved": true
   },
-  "limits": {
-    "pelvis_vertical_bob_peak_to_peak_px": 2,
-    "preferred_support_foot_drift_authored_samples_px": 1,
-    "max_visible_runtime_support_foot_drift_px": 2,
-    "sword_tip_min_clearance_from_baseline_px": 2
-  },
-  "joint_model": [
-    "ROOT_ANCHOR",
-    "PELVIS_CENTER",
-    "HEAD",
-    "SHOULDER_NEAR",
-    "SHOULDER_FAR",
-    "HIP_NEAR",
-    "HIP_FAR",
-    "KNEE_NEAR",
-    "KNEE_FAR",
-    "ANKLE_NEAR",
-    "ANKLE_FAR",
-    "HEEL_NEAR",
-    "HEEL_FAR",
-    "TOE_NEAR",
-    "TOE_FAR",
-    "ELBOW_NEAR",
-    "ELBOW_FAR",
-    "HAND_NEAR",
-    "HAND_FAR",
-    "SWORD_GRIP",
-    "SWORD_TIP"
-  ],
-  "frames": [
+  "source_frames": [
     {
-      "id": "F01",
-      "phase": "CONTACT_NEAR",
-      "distance_px": 0,
-      "support_leg": "NEAR",
-      "swing_leg": "FAR",
-      "planted_contact": "NEAR_HEEL_TO_FOOT",
-      "pelvis_y_offset_px": 0,
-      "key_pose": true,
-      "planted_contact_local_x": 87,
-      "planted_contact_world_x": 87,
-      "joints": {
-        "ROOT_ANCHOR": [
-          64,
-          116
-        ],
-        "PELVIS_CENTER": [
-          64,
-          74
-        ],
-        "HEAD": [
-          64,
-          35
-        ],
-        "SHOULDER_NEAR": [
-          67,
-          53
-        ],
-        "SHOULDER_FAR": [
-          61,
-          54
-        ],
-        "HIP_NEAR": [
-          66,
-          75
-        ],
-        "HIP_FAR": [
-          62,
-          76
-        ],
-        "KNEE_NEAR": [
-          77,
-          94
-        ],
-        "ANKLE_NEAR": [
-          85,
-          111
-        ],
-        "HEEL_NEAR": [
-          82,
-          116
-        ],
-        "TOE_NEAR": [
-          92,
-          116
-        ],
-        "KNEE_FAR": [
-          49,
-          94
-        ],
-        "ANKLE_FAR": [
-          39,
-          111
-        ],
-        "HEEL_FAR": [
-          36,
-          116
-        ],
-        "TOE_FAR": [
-          45,
-          116
-        ],
-        "ELBOW_NEAR": [
-          73,
-          60
-        ],
-        "HAND_NEAR": [
-          78,
-          65
-        ],
-        "ELBOW_FAR": [
-          69,
-          62
-        ],
-        "HAND_FAR": [
-          76,
-          67
-        ],
-        "SWORD_GRIP": [
-          78,
-          65
-        ],
-        "SWORD_TIP": [
-          116,
-          102
-        ]
-      }
+      "id": "W00",
+      "phase": null,
+      "support_foot": null,
+      "support_foot_local_x": null,
+      "audit_status": "PENDING"
     },
     {
-      "id": "F02",
-      "phase": "DOWN_NEAR",
-      "distance_px": 7,
-      "support_leg": "NEAR",
-      "swing_leg": "FAR",
-      "planted_contact": "NEAR_FOOT",
-      "pelvis_y_offset_px": 1,
-      "key_pose": false,
-      "planted_contact_local_x": 80,
-      "planted_contact_world_x": 87,
-      "joints": {
-        "ROOT_ANCHOR": [
-          64,
-          116
-        ],
-        "PELVIS_CENTER": [
-          64,
-          75
-        ],
-        "HEAD": [
-          64,
-          36
-        ],
-        "SHOULDER_NEAR": [
-          67,
-          54
-        ],
-        "SHOULDER_FAR": [
-          61,
-          55
-        ],
-        "HIP_NEAR": [
-          66,
-          76
-        ],
-        "HIP_FAR": [
-          62,
-          77
-        ],
-        "KNEE_NEAR": [
-          73,
-          96
-        ],
-        "ANKLE_NEAR": [
-          78,
-          111
-        ],
-        "HEEL_NEAR": [
-          75,
-          116
-        ],
-        "TOE_NEAR": [
-          85,
-          116
-        ],
-        "KNEE_FAR": [
-          56,
-          91
-        ],
-        "ANKLE_FAR": [
-          49,
-          108
-        ],
-        "HEEL_FAR": [
-          47,
-          112
-        ],
-        "TOE_FAR": [
-          55,
-          113
-        ],
-        "ELBOW_NEAR": [
-          73,
-          61
-        ],
-        "HAND_NEAR": [
-          78,
-          66
-        ],
-        "ELBOW_FAR": [
-          69,
-          63
-        ],
-        "HAND_FAR": [
-          76,
-          68
-        ],
-        "SWORD_GRIP": [
-          78,
-          66
-        ],
-        "SWORD_TIP": [
-          116,
-          103
-        ]
-      }
+      "id": "W01",
+      "phase": null,
+      "support_foot": null,
+      "support_foot_local_x": null,
+      "audit_status": "PENDING"
     },
     {
-      "id": "F03",
-      "phase": "PASSING_FAR",
-      "distance_px": 14,
-      "support_leg": "NEAR",
-      "swing_leg": "FAR",
-      "planted_contact": "NEAR_FOOT",
-      "pelvis_y_offset_px": 0,
-      "key_pose": true,
-      "planted_contact_local_x": 73,
-      "planted_contact_world_x": 87,
-      "joints": {
-        "ROOT_ANCHOR": [
-          64,
-          116
-        ],
-        "PELVIS_CENTER": [
-          64,
-          74
-        ],
-        "HEAD": [
-          64,
-          35
-        ],
-        "SHOULDER_NEAR": [
-          67,
-          53
-        ],
-        "SHOULDER_FAR": [
-          61,
-          54
-        ],
-        "HIP_NEAR": [
-          66,
-          75
-        ],
-        "HIP_FAR": [
-          62,
-          76
-        ],
-        "KNEE_NEAR": [
-          68,
-          95
-        ],
-        "ANKLE_NEAR": [
-          71,
-          111
-        ],
-        "HEEL_NEAR": [
-          68,
-          116
-        ],
-        "TOE_NEAR": [
-          78,
-          116
-        ],
-        "KNEE_FAR": [
-          68,
-          89
-        ],
-        "ANKLE_FAR": [
-          63,
-          106
-        ],
-        "HEEL_FAR": [
-          61,
-          111
-        ],
-        "TOE_FAR": [
-          69,
-          112
-        ],
-        "ELBOW_NEAR": [
-          74,
-          60
-        ],
-        "HAND_NEAR": [
-          79,
-          65
-        ],
-        "ELBOW_FAR": [
-          70,
-          62
-        ],
-        "HAND_FAR": [
-          77,
-          67
-        ],
-        "SWORD_GRIP": [
-          79,
-          65
-        ],
-        "SWORD_TIP": [
-          117,
-          101
-        ]
-      }
+      "id": "W02",
+      "phase": null,
+      "support_foot": null,
+      "support_foot_local_x": null,
+      "audit_status": "PENDING"
     },
     {
-      "id": "F04",
-      "phase": "UP_NEAR",
-      "distance_px": 21,
-      "support_leg": "NEAR",
-      "swing_leg": "FAR",
-      "planted_contact": "NEAR_FOREFOOT",
-      "pelvis_y_offset_px": -1,
-      "key_pose": false,
-      "planted_contact_local_x": 66,
-      "planted_contact_world_x": 87,
-      "joints": {
-        "ROOT_ANCHOR": [
-          64,
-          116
-        ],
-        "PELVIS_CENTER": [
-          64,
-          73
-        ],
-        "HEAD": [
-          64,
-          34
-        ],
-        "SHOULDER_NEAR": [
-          67,
-          52
-        ],
-        "SHOULDER_FAR": [
-          61,
-          53
-        ],
-        "HIP_NEAR": [
-          66,
-          74
-        ],
-        "HIP_FAR": [
-          62,
-          75
-        ],
-        "KNEE_NEAR": [
-          64,
-          94
-        ],
-        "ANKLE_NEAR": [
-          64,
-          111
-        ],
-        "HEEL_NEAR": [
-          61,
-          116
-        ],
-        "TOE_NEAR": [
-          71,
-          116
-        ],
-        "KNEE_FAR": [
-          75,
-          88
-        ],
-        "ANKLE_FAR": [
-          84,
-          107
-        ],
-        "HEEL_FAR": [
-          82,
-          112
-        ],
-        "TOE_FAR": [
-          90,
-          112
-        ],
-        "ELBOW_NEAR": [
-          74,
-          59
-        ],
-        "HAND_NEAR": [
-          79,
-          64
-        ],
-        "ELBOW_FAR": [
-          70,
-          61
-        ],
-        "HAND_FAR": [
-          77,
-          66
-        ],
-        "SWORD_GRIP": [
-          79,
-          64
-        ],
-        "SWORD_TIP": [
-          117,
-          100
-        ]
-      }
-    },
-    {
-      "id": "F05",
-      "phase": "CONTACT_FAR",
-      "distance_px": 28,
-      "support_leg": "FAR",
-      "swing_leg": "NEAR",
-      "planted_contact": "FAR_HEEL_TO_FOOT",
-      "pelvis_y_offset_px": 0,
-      "key_pose": true,
-      "planted_contact_local_x": 87,
-      "planted_contact_world_x": 115,
-      "joints": {
-        "ROOT_ANCHOR": [
-          64,
-          116
-        ],
-        "PELVIS_CENTER": [
-          64,
-          74
-        ],
-        "HEAD": [
-          64,
-          35
-        ],
-        "SHOULDER_NEAR": [
-          67,
-          53
-        ],
-        "SHOULDER_FAR": [
-          61,
-          54
-        ],
-        "HIP_NEAR": [
-          66,
-          75
-        ],
-        "HIP_FAR": [
-          62,
-          76
-        ],
-        "KNEE_FAR": [
-          76,
-          94
-        ],
-        "ANKLE_FAR": [
-          85,
-          111
-        ],
-        "HEEL_FAR": [
-          82,
-          116
-        ],
-        "TOE_FAR": [
-          92,
-          116
-        ],
-        "KNEE_NEAR": [
-          49,
-          94
-        ],
-        "ANKLE_NEAR": [
-          39,
-          111
-        ],
-        "HEEL_NEAR": [
-          36,
-          116
-        ],
-        "TOE_NEAR": [
-          45,
-          116
-        ],
-        "ELBOW_NEAR": [
-          73,
-          60
-        ],
-        "HAND_NEAR": [
-          78,
-          65
-        ],
-        "ELBOW_FAR": [
-          69,
-          62
-        ],
-        "HAND_FAR": [
-          76,
-          67
-        ],
-        "SWORD_GRIP": [
-          78,
-          65
-        ],
-        "SWORD_TIP": [
-          116,
-          102
-        ]
-      }
-    },
-    {
-      "id": "F06",
-      "phase": "DOWN_FAR",
-      "distance_px": 35,
-      "support_leg": "FAR",
-      "swing_leg": "NEAR",
-      "planted_contact": "FAR_FOOT",
-      "pelvis_y_offset_px": 1,
-      "key_pose": false,
-      "planted_contact_local_x": 80,
-      "planted_contact_world_x": 115,
-      "joints": {
-        "ROOT_ANCHOR": [
-          64,
-          116
-        ],
-        "PELVIS_CENTER": [
-          64,
-          75
-        ],
-        "HEAD": [
-          64,
-          36
-        ],
-        "SHOULDER_NEAR": [
-          67,
-          54
-        ],
-        "SHOULDER_FAR": [
-          61,
-          55
-        ],
-        "HIP_NEAR": [
-          66,
-          76
-        ],
-        "HIP_FAR": [
-          62,
-          77
-        ],
-        "KNEE_FAR": [
-          73,
-          96
-        ],
-        "ANKLE_FAR": [
-          78,
-          111
-        ],
-        "HEEL_FAR": [
-          75,
-          116
-        ],
-        "TOE_FAR": [
-          85,
-          116
-        ],
-        "KNEE_NEAR": [
-          56,
-          91
-        ],
-        "ANKLE_NEAR": [
-          49,
-          108
-        ],
-        "HEEL_NEAR": [
-          47,
-          112
-        ],
-        "TOE_NEAR": [
-          55,
-          113
-        ],
-        "ELBOW_NEAR": [
-          73,
-          61
-        ],
-        "HAND_NEAR": [
-          78,
-          66
-        ],
-        "ELBOW_FAR": [
-          69,
-          63
-        ],
-        "HAND_FAR": [
-          76,
-          68
-        ],
-        "SWORD_GRIP": [
-          78,
-          66
-        ],
-        "SWORD_TIP": [
-          116,
-          103
-        ]
-      }
-    },
-    {
-      "id": "F07",
-      "phase": "PASSING_NEAR",
-      "distance_px": 42,
-      "support_leg": "FAR",
-      "swing_leg": "NEAR",
-      "planted_contact": "FAR_FOOT",
-      "pelvis_y_offset_px": 0,
-      "key_pose": true,
-      "planted_contact_local_x": 73,
-      "planted_contact_world_x": 115,
-      "joints": {
-        "ROOT_ANCHOR": [
-          64,
-          116
-        ],
-        "PELVIS_CENTER": [
-          64,
-          74
-        ],
-        "HEAD": [
-          64,
-          35
-        ],
-        "SHOULDER_NEAR": [
-          67,
-          53
-        ],
-        "SHOULDER_FAR": [
-          61,
-          54
-        ],
-        "HIP_NEAR": [
-          66,
-          75
-        ],
-        "HIP_FAR": [
-          62,
-          76
-        ],
-        "KNEE_FAR": [
-          68,
-          95
-        ],
-        "ANKLE_FAR": [
-          71,
-          111
-        ],
-        "HEEL_FAR": [
-          68,
-          116
-        ],
-        "TOE_FAR": [
-          78,
-          116
-        ],
-        "KNEE_NEAR": [
-          68,
-          89
-        ],
-        "ANKLE_NEAR": [
-          63,
-          106
-        ],
-        "HEEL_NEAR": [
-          61,
-          111
-        ],
-        "TOE_NEAR": [
-          69,
-          112
-        ],
-        "ELBOW_NEAR": [
-          74,
-          60
-        ],
-        "HAND_NEAR": [
-          79,
-          65
-        ],
-        "ELBOW_FAR": [
-          70,
-          62
-        ],
-        "HAND_FAR": [
-          77,
-          67
-        ],
-        "SWORD_GRIP": [
-          79,
-          65
-        ],
-        "SWORD_TIP": [
-          117,
-          101
-        ]
-      }
-    },
-    {
-      "id": "F08",
-      "phase": "UP_FAR",
-      "distance_px": 49,
-      "support_leg": "FAR",
-      "swing_leg": "NEAR",
-      "planted_contact": "FAR_FOREFOOT",
-      "pelvis_y_offset_px": -1,
-      "key_pose": false,
-      "planted_contact_local_x": 66,
-      "planted_contact_world_x": 115,
-      "joints": {
-        "ROOT_ANCHOR": [
-          64,
-          116
-        ],
-        "PELVIS_CENTER": [
-          64,
-          73
-        ],
-        "HEAD": [
-          64,
-          34
-        ],
-        "SHOULDER_NEAR": [
-          67,
-          52
-        ],
-        "SHOULDER_FAR": [
-          61,
-          53
-        ],
-        "HIP_NEAR": [
-          66,
-          74
-        ],
-        "HIP_FAR": [
-          62,
-          75
-        ],
-        "KNEE_FAR": [
-          64,
-          94
-        ],
-        "ANKLE_FAR": [
-          64,
-          111
-        ],
-        "HEEL_FAR": [
-          61,
-          116
-        ],
-        "TOE_FAR": [
-          71,
-          116
-        ],
-        "KNEE_NEAR": [
-          75,
-          88
-        ],
-        "ANKLE_NEAR": [
-          84,
-          107
-        ],
-        "HEEL_NEAR": [
-          82,
-          112
-        ],
-        "TOE_NEAR": [
-          90,
-          112
-        ],
-        "ELBOW_NEAR": [
-          74,
-          59
-        ],
-        "HAND_NEAR": [
-          79,
-          64
-        ],
-        "ELBOW_FAR": [
-          70,
-          61
-        ],
-        "HAND_FAR": [
-          77,
-          66
-        ],
-        "SWORD_GRIP": [
-          79,
-          64
-        ],
-        "SWORD_TIP": [
-          117,
-          100
-        ]
-      }
+      "id": "W03",
+      "phase": null,
+      "support_foot": null,
+      "support_foot_local_x": null,
+      "audit_status": "PENDING"
     }
   ],
-  "authored_sample_validation": {
-    "near_support_world_x": [
-      87,
-      87,
-      87,
-      87
-    ],
-    "far_support_world_x": [
-      115,
-      115,
-      115,
-      115
-    ],
-    "support_sample_drift_px": 0,
-    "half_step_distance_px": 28,
-    "same_foot_stride_distance_px": 56
-  },
-  "next_gate": "POSE_GUIDE_APPROVAL"
+  "required_outputs": [
+    "W00_W03_EXACT_FRAMES",
+    "IN_PLACE_PREVIEW_1X",
+    "IN_PLACE_PREVIEW_05X",
+    "WORLD_SPACE_PREVIEW_1X",
+    "WORLD_SPACE_PREVIEW_05X",
+    "CONTACT_DEBUG_OVERLAY",
+    "MEASUREMENT_REPORT"
+  ],
+  "retired_assumptions": [
+    "EIGHT_FRAMES_REQUIRED",
+    "POSE_GUIDE_IS_POSE_AUTHORITY",
+    "V2_56PX_CYCLE_DISTANCE_INHERITED",
+    "REGENERATE_DUROTAR_BEFORE_RAW_SOURCE_AUDIT"
+  ],
+  "next_gate": "RAW_4_FRAME_AUDIT"
 }
