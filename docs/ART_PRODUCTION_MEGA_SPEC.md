@@ -1,7 +1,7 @@
 # RPG-DE-LUTA — MEGA SPEC DE PRODUÇÃO DE ARTE
 
 **Documento:** `ART_PRODUCTION_MEGA_SPEC`  
-**Versão:** `1.0.0`  
+**Versão:** `1.1.0`  
 **Status:** NORMATIVO / OBRIGATÓRIO  
 **Escopo:** sprites de personagens, monstros, armas, animações e cenários  
 **Motor:** Godot 4  
@@ -119,6 +119,59 @@ DUROTAR_MASTER_V2
 O `V1` permanece preservado.
 
 Nenhum asset antigo passa automaticamente para `V2`.
+
+
+## 1.5. SOURCE-FIRST / EVIDENCE-FIRST
+
+Antes de gerar, redesenhar ou substituir qualquer asset, verificar se existe uma fonte canônica/aprovada no repositório.
+
+Quando existe fonte aprovada, o fluxo obrigatório é:
+
+```
+RECUPERAR FONTE
+  ↓
+VALIDAR INTEGRIDADE / DIMENSÕES / CONTRATO
+  ↓
+EXTRAIR OU OBSERVAR SEM ALTERAÇÃO
+  ↓
+MEDIR
+  ↓
+DIAGNOSTICAR
+  ↓
+GO / NO-GO
+  ↓
+PARAR NO GATE
+```
+
+Somente se a evidência provar a necessidade de alteração:
+
+```
+MUDANÇA MÍNIMA E DIRECIONADA
+  ↓
+VALIDAÇÃO
+  ↓
+PREVIEW
+  ↓
+RUNTIME QA
+```
+
+Regras:
+
+- asset raw aprovado tem prioridade sobre screenshot, prancha derivada, pose guide ou geração;
+- geração por IA não é ferramenta de extração;
+- não recriar personagem aprovado para corrigir timing, foot slide, baseline, offset ou lógica de runtime;
+- frame count antigo não obriga nova produção;
+- valores históricos de timing/distância precisam ser revalidados na versão atual;
+- após dois fracassos com a mesma causa, interromper a estratégia e revisar a pipeline;
+- evidências e decisões importantes devem ser registradas no Git.
+
+Documento operacional obrigatório:
+
+`docs/AI_PRODUCTION_OPERATING_MODEL.md`
+
+Instruções para agentes:
+
+`AGENTS.md`
 
 ---
 
@@ -1046,6 +1099,34 @@ Prioridades oficiais:
 
 # 26. PIPELINE DE PRODUÇÃO COM IA
 
+A pipeline depende de a fonte já existir ou não.
+
+## 26.1. Asset/fonte já existente
+
+Fluxo obrigatório:
+
+```text
+PEDIDO
+  ↓
+LOCALIZAR FONTE CANÔNICA
+  ↓
+VALIDAR FONTE
+  ↓
+EXTRAÇÃO / INSPEÇÃO NÃO DESTRUTIVA
+  ↓
+MEDIÇÃO
+  ↓
+DIAGNÓSTICO
+  ↓
+GO / NO-GO
+```
+
+Se o problema puder ser resolvido por dados/runtime, a arte permanece intacta.
+
+Nova arte só entra quando um defeito visual específico continuar comprovado após medição/tuning.
+
+## 26.2. Asset realmente novo
+
 Fluxo obrigatório:
 
 ```text
@@ -1055,20 +1136,29 @@ RESOLUÇÃO DOS IDs / SPECS
   ↓
 VALIDAÇÃO DE PRÉ-CONDIÇÕES
   ↓
-GERAÇÃO
+GERAÇÃO DE CANDIDATO
   ↓
 NORMALIZAÇÃO
   ↓
 VALIDAÇÃO VISUAL + TÉCNICA
+  ↓
+PREVIEW
   ↓
 APROVAÇÃO HUMANA
   ↓
 VERSIONAMENTO
   ↓
 INTEGRAÇÃO NO GODOT
+  ↓
+RUNTIME QA
 ```
 
-É proibido pular diretamente de geração para integração.
+É proibido:
+
+- usar geração para simular extração de asset existente;
+- promover `GENERATED → IN_GAME` sem validação;
+- substituir Master/source aprovado por geração sem change control;
+- continuar repetindo geração quando o defeito está na própria estratégia.
 
 ---
 
