@@ -1,90 +1,119 @@
 # WALK_V3_SPEC — Durotar
 
-**Status:** SPEC_DRAFT / MOTION DESIGN  
+**Status:** SOURCE_FRAME_AUDIT  
 **Animation ID:** `DUROTAR_WALK_V3`  
 **Supersedes:** `DUROTAR_WALK_V2` (RUNTIME_QA_FAILED / prototype reference)  
 **Character Master:** `DUROTAR_MASTER_V1`  
 **Weapon Master:** `DUROTAR_SWORD_V1`  
-**Facing Master:** RIGHT  
-**Authored drawings target:** 8  
+**Canonical Walk Source:** `assets/characters/durotar/walk.png`  
+**Source layout:** 512×128 / four 128×128 cells  
 **Gameplay simulation:** 60 Hz
 
 ---
 
-## 1. Production decision
+## 1. Corrected production decision
 
-WALK_V3 must not ask image generation to invent locomotion.
+WALK_V3 starts from the existing raw four-frame walk.
 
-The production order is:
+Do not regenerate Durotar to solve locomotion.
 
-`MASTER → MOTION DATA → POSE GUIDE → KEYPOSE QA → FULL 8-FRAME GENERATION → SINGLE-SCALE NORMALIZATION → PREVIEW QA → GODOT → RUNTIME QA`
+Production order:
 
-Biomechanics are authoritative. Generated art must conform to the approved motion plan.
+`RAW WALK SOURCE → LOSSLESS 4-FRAME EXTRACTION → SOURCE AUDIT → IN-PLACE PREVIEW → WORLD-SPACE MEASUREMENT → RUNTIME/DATA TUNING → QA`
 
-No final Durotar sprite may be generated before the pose guide passes review.
+Only if a measured transition still fails after runtime/data tuning may a targeted in-between be created.
 
----
-
-## 2. Problems from WALK_V2 that V3 must solve
-
-V3 exists because V2 failed Runtime QA due to:
-
-- visible foot sliding;
-- excessive crouch/shuffle read;
-- ambiguous near/far-leg anatomy;
-- malformed F07/F08 leg/foot read;
-- sword masking the gait;
-- sword tip reading as ground contact;
-- rigid torso/weapon relationship;
-- Idle→Walk posture pop;
-- per-frame independent normalization causing scale/root drift.
-
-Any recurrence of one of these blockers is NO-GO.
+The previous eight-pose joint guide is retained as diagnostic history only. It is not pose authority.
 
 ---
 
-## 3. Leg naming convention
+## 2. Authority hierarchy
 
-Do not use ambiguous LEFT/RIGHT naming in art direction.
-
-For a RIGHT-facing sprite:
-
-- **NEAR LEG** = leg visually closest to camera;
-- **FAR LEG** = leg visually behind the body.
-
-Every frame must explicitly declare:
-
-- support_leg;
-- swing_leg;
-- planted_contact;
-- phase.
+1. `DUROTAR_MASTER_V1` — identity;
+2. raw `walk.png` — locomotion pose/source;
+3. `DUROTAR_SWORD_V1` — weapon identity/proportions;
+4. measured runtime behavior — cycle-distance/offset tuning;
+5. pose guides — diagnostic only;
+6. generated images — candidate only.
 
 ---
 
-## 4. Cycle
+## 3. Frame-count decision
 
-| Frame | Phase | Support | Swing | Distance phase |
-|---|---|---|---|---:|
-| F01 | CONTACT_NEAR | NEAR | FAR | 0 px |
-| F02 | DOWN_NEAR | NEAR | FAR | 7 px |
-| F03 | PASSING_FAR | NEAR | FAR | 14 px |
-| F04 | UP_NEAR | NEAR | FAR | 21 px |
-| F05 | CONTACT_FAR | FAR | NEAR | 28 px |
-| F06 | DOWN_FAR | FAR | NEAR | 35 px |
-| F07 | PASSING_NEAR | FAR | NEAR | 42 px |
-| F08 | UP_FAR | FAR | NEAR | 49 px |
+Initial authored drawings: **4 canonical source frames**.
 
-Provisional cycle distance: **56 px**.
+Do not force eight drawings.
 
-Initial QA speed: **120 px/s**.
+The walk may ship with four drawings if it passes:
 
-These values preserve the useful V2 playtest baseline but are not balance constants.
+- readability;
+- loop;
+- start/stop;
+- left/right mirror;
+- baseline;
+- sword consistency;
+- world-space foot-slide QA.
+
+Additional drawings require evidence from QA.
 
 ---
 
-## 5. Phase driver
+## 4. Source-frame audit
 
-WALK_V3 locomotion phase is driven primarily by **distance travelled**, not by a fixed animation FPS.
+Raw cell ids:
+
+- W00
+- W01
+- W02
+- W03
+
+Do not assign CONTACT / DOWN / PASSING / UP labels yet.
+
+For each source frame measure first:
+
+- silhouette bounds;
+- apparent body height;
+- baseline;
+- candidate support foot and local X;
+- candidate swing foot;
+- sword grip;
+- sword tip;
+- root/pivot compatibility;
+- gait function.
+
+Phase labels are results of the audit, not assumptions imported from V2.
+
+---
+
+## 5. Geometry contract
+
+Runtime cell:
+
+- 128×128;
+- baseline Y=116 where the source actually conforms;
+- logical pivot target (64,116);
+- facing RIGHT;
+- nearest-neighbor;
+- transparent background;
+- no runtime scaling to hide art errors.
+
+### Normalization
+
+The raw source is already a 4-cell runtime sheet.
+
+Forbidden:
+
+- independent bbox fit;
+- independent scaling;
+- AI redraw during extraction.
+
+If metadata offsets are required, keep them data-driven and documented.
+
+---
+
+## 6. Playback model
+
+Preferred locomotion progression is based on travelled distance, not fixed FPS alone.
 
 Conceptually:
 
@@ -92,297 +121,97 @@ Conceptually:
 phase_distance = total_walk_distance % cycle_distance_px
 ```
 
-At the initial 56 px cycle:
+However, the cycle distance is **not locked to 56 px anymore**.
 
-- F01 sample: 0 px;
-- F02: 7 px;
-- F03: 14 px;
-- F04: 21 px;
-- F05: 28 px;
-- F06: 35 px;
-- F07: 42 px;
-- F08: 49 px;
-- next F01: 56 px.
+It must be derived/tuned from the actual four source frames and Runtime QA.
 
-Gameplay movement remains authoritative. The visual cycle follows movement distance.
-
-A fixed FPS may not be the sole timing mechanism.
+Do not inherit V2's 56 px merely because it existed.
 
 ---
 
-## 6. Global geometry contract
+## 7. Foot-slide procedure
 
-Runtime normalization remains compatible with `HUMANOID_STANDARD_V1`:
+For each audited source frame:
 
-- cell: 128×128;
-- baseline: Y=116;
-- logical pivot: (64,116);
-- facing: RIGHT;
-- neutral body height target: 96 px ±3;
-- nearest-neighbor;
-- transparent background;
-- no anti-aliasing;
-- no baked ground shadow;
-- no VFX.
+1. identify the visible candidate support contact;
+2. record its local X;
+3. test a candidate cycle distance;
+4. compute support contact in world-space;
+5. measure drift across relevant neighboring frames;
+6. tune cycle distance and data offsets;
+7. validate at 1× and 0.5×.
 
-### Single-scale rule
-
-All eight drawings use **one scale derived from the approved Master**.
-
-Forbidden:
-
-`detect bbox → fit F01`
-`detect bbox → fit F02`
-`detect bbox → fit F03`
-etc.
-
-There is one normalization transform for the whole sequence.
-
-Frame differences are expressed as pose/offset data, never independent rescaling.
+If a support phase cannot be made convincing with the canonical frames, document the exact transition before requesting new art.
 
 ---
 
-## 7. Root and pelvis
+## 8. Sword policy
 
-A common logical root is used for all frames.
+Do not alter the sword during the four-frame audit.
 
-The pose guide must define:
+Evaluate the existing carry first.
 
-- root/pelvis anchor;
-- head;
-- shoulders;
-- near/far hips;
-- near/far knees;
-- near/far ankles;
-- near/far heel;
-- near/far toe;
-- sword grip;
-- sword tip.
+`DUROTAR_SWORD_V1` remains the authority for any future art modification.
 
-Pelvis motion must form a controlled arc.
-
-Target vertical bob for V3: **maximum 2 px peak-to-peak** during the cycle unless Runtime QA proves a slightly larger value is required.
-
-The body must never read as entering a crouch when Walk starts.
+A new frame may not resize, curve, redesign, shorten or lengthen the weapon to fit.
 
 ---
 
-## 8. Foot planting
+## 9. New-art gate
 
-Support phases:
+New art is blocked until FOUR_FRAME_QA fails for a specific documented visual reason.
 
-- F01–F04: NEAR foot carries the body;
-- F05–F08: FAR foot carries the body.
+If new art is required:
 
-At authored pose sample points, the support contact must remain effectively stationary in world-space while the root advances.
-
-Target measurement:
-
-- preferred support-foot drift between authored support samples: **≤1 px**;
-- runtime visible drift beyond **2 px** during a support phase is a blocker.
-
-If baked-sprite playback cannot meet the runtime tolerance, solve it in locomotion presentation/metadata or the pose pipeline. Do not distort the Master and do not hide the problem with VFX.
+- create only the missing transition;
+- use the two neighboring canonical source frames;
+- preserve identity/armor/weapon;
+- prefer local/region edits;
+- do not regenerate the full strip.
 
 ---
 
-## 9. Pose requirements
+## 10. QA outputs
 
-### F01 — CONTACT_NEAR — key pose
+Before Godot changes, produce:
 
-- NEAR heel makes clear forward contact;
-- FAR leg trails;
-- knees athletic, not crouched;
-- pelvis neutral;
-- torso stable;
-- gait silhouette open;
-- sword tip clearly above baseline.
-
-### F02 — DOWN_NEAR
-
-- NEAR foot planted;
-- weight compresses subtly;
-- FAR heel recovers;
-- lowest pelvis point, but no squat read.
-
-### F03 — PASSING_FAR — key pose
-
-- NEAR foot supports;
-- FAR knee passes beneath/forward of pelvis;
-- FAR foot clears ground;
-- both legs remain anatomically separable;
-- sword cannot hide the passing ankle/knee relationship.
-
-### F04 — UP_NEAR
-
-- NEAR support transitions toward forefoot;
-- FAR leg prepares next contact;
-- highest pelvis point;
-- must flow naturally into F05.
-
-### F05 — CONTACT_FAR — key pose
-
-- FAR heel establishes forward contact;
-- NEAR leg trails;
-- not a literal horizontal flip of F01;
-- weapon stays in the same hands and character side.
-
-### F06 — DOWN_FAR
-
-- FAR foot planted;
-- subtle compression;
-- NEAR rear foot begins recovery.
-
-### F07 — PASSING_NEAR — key pose
-
-- FAR foot supports;
-- NEAR knee passes beneath/forward of pelvis;
-- anatomy must be unequivocal;
-- no disconnected foot;
-- no extra-limb read.
-
-### F08 — UP_FAR
-
-- FAR support transitions toward forefoot;
-- NEAR leg advances into the next F01;
-- F08→F01 must close without pop.
+- exact extracted W00–W03;
+- in-place 1× preview;
+- in-place 0.5× preview;
+- world-space 1× preview;
+- world-space 0.5× preview;
+- debug overlay for baseline/root/contact candidates;
+- measurement report.
 
 ---
 
-## 10. Leg readability gate
+## 11. Runtime QA
 
-For F03 and F07 in particular:
+Minimum:
 
-- near/far leg must be identifiable without relying on color alone;
-- no merged ankle shapes;
-- no foot may look detached;
-- no silhouette may imply a third leg;
-- the sword may not cover both lower legs simultaneously;
-- the passing leg must retain a continuous hip→knee→ankle→foot read.
-
-Failure = NO-GO before image-generation polish.
-
----
-
-## 11. Sword contract
-
-`DUROTAR_SWORD_V1` remains mandatory.
-
-During Walk:
-
-- same apparent weapon identity and proportions;
-- no runtime/art scaling to make it fit;
-- tip must remain visibly clear of the baseline;
-- minimum target visual clearance at lowest point: **2 px**;
-- blade must not continuously mask the gait;
-- hand/grip connection cannot teleport;
-- torso leads and weapon may lag subtly to communicate mass;
-- inertia must be subtle enough that the sword never appears disconnected.
-
-VFX is forbidden in Walk.
+- RIGHT and mirrored LEFT;
+- normal speed and 0.5×;
+- 30 s continuous movement;
+- repeated start/stop;
+- Idle→Walk and Walk→Idle;
+- camera static and moving;
+- no scale jitter;
+- no baseline pop;
+- no unacceptable foot slide;
+- sword remains legible and consistent.
 
 ---
 
-## 12. Pose-guide gate
+## 12. State machine
 
-The first visual production artifact for V3 is **not a finished sprite sheet**.
+`SOURCE_LOCKED → RAW_4_FRAME_AUDIT → IN_PLACE_PREVIEW → WORLD_SPACE_MEASUREMENT → RUNTIME_TUNING → FOUR_FRAME_QA`
 
-It is `WALK_V3_POSE_GUIDE`.
+Pass:
+`→ RUNTIME_QA → LOCKED`
 
-The guide must show all eight poses with joint/contact markers.
-
-First review focuses on four key events:
-
-- F01 CONTACT_NEAR;
-- F03 PASSING_FAR;
-- F05 CONTACT_FAR;
-- F07 PASSING_NEAR.
-
-Review criteria:
-
-- gait biomechanics;
-- support-foot logic;
-- pelvis arc;
-- leg readability;
-- silhouette;
-- sword line/clearance;
-- F07 anatomy;
-- F08→F01 closure.
-
-Only after the guide passes may final Durotar art be generated.
+Specific visual-transition failure:
+`→ TARGETED_INBETWEEN_REQUIRED → TARGETED_ART_REVIEW → PREVIEW_QA → RUNTIME_QA → LOCKED`
 
 ---
 
-## 13. Image-generation rule
-
-After pose-guide approval, generate the **full eight-frame sequence as one controlled strip/edit whenever possible** using:
-
-- `DUROTAR_MASTER_V1`;
-- `DUROTAR_SWORD_V1`;
-- approved `WALK_V3_POSE_GUIDE`;
-- the same palette/style contract.
-
-Do not independently ask for eight unrelated finished frames.
-
-If one region fails, repair that region/frame using adjacent approved frames and the Master as context instead of regenerating the complete cycle blindly.
-
----
-
-## 14. Preview gate before Godot
-
-Before runtime integration, automatically produce:
-
-- 1× loop;
-- 0.5× loop;
-- contact-debug loop;
-- baseline/root overlay;
-- support-foot marker;
-- sword-tip marker.
-
-QA must inspect:
-
-- anatomy;
-- foot drift;
-- pelvis arc;
-- scale consistency;
-- sword clearance;
-- F08→F01;
-- Idle reference → Walk entry;
-- Walk exit → Idle reference.
-
-If the preview already fails, do not import it into Godot.
-
----
-
-## 15. Runtime QA
-
-Minimum runtime review:
-
-- 30 seconds moving RIGHT;
-- 30 seconds moving LEFT;
-- 1×;
-- 0.5×;
-- start/stop repeatedly;
-- Idle→Walk;
-- Walk→Idle;
-- camera moving and camera static;
-- baseline/contact visible in debug.
-
-WALK_V3 becomes `LOCKED` only if:
-
-- no anatomy blocker;
-- no scale/root jitter;
-- no obvious support-foot slide;
-- no sword-ground read;
-- no gait occlusion blocker;
-- no F08→F01 pop;
-- no Idle↔Walk crouch/pop.
-
----
-
-## 16. State machine
-
-`SPEC_DRAFT → MOTION_APPROVED → POSE_GUIDE_REVIEW → POSE_GUIDE_APPROVED → FULL_STRIP_GENERATION → NORMALIZED → PREVIEW_QA → RUNTIME_QA → LOCKED`
-
-Any failed gate returns to the previous production stage.
-
-Never silently replace WALK_V3 after LOCKED; create a new version.
+See `WALK_V3_PIPELINE_CORRECTION_2026-09-18.md` for the rationale and retired route.
